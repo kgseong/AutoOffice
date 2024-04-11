@@ -10,16 +10,18 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+using System.IO;
+
 namespace AutoOffice
 {
     public partial class frm_XlMerge : Form
     {
 
-        ExcelUtil excel = new ExcelUtil();
-        object tree_drag_item;
+        ExcelUtil oExcel = new ExcelUtil();
+        //object tree_drag_item;
 
         TabPage[] tabs;
-        string[] help = { "help_excel_merge2.htm", "help_excel_merge2.htm" };
+        string[] help = { @"help_excel_merge2.htm", @"help_excel_merge2.htm" };
 
         System.Windows.Forms.TabPage tp_merge = new TabPage();
         System.Windows.Forms.DataGridView gv_merge = new DataGridView();
@@ -36,7 +38,7 @@ namespace AutoOffice
             if (ok == DialogResult.OK)
             {
                 this.txt_sel_path.Text = this.ofd.FileName;
-                excel.ExcelFile = this.txt_sel_path.Text;
+                oExcel.ExcelFile = this.txt_sel_path.Text;
                 fillData();
             }
         }
@@ -44,7 +46,7 @@ namespace AutoOffice
 
         void fillData()
         {
-            var ds = excel.OpenExcelToDataSet();
+            var ds = oExcel.OpenExcelToDataSet();
             foreach (System.Data.DataTable tbl in ds.Tables)
             {
                 System.Windows.Forms.TabPage tp = new TabPage();
@@ -74,7 +76,7 @@ namespace AutoOffice
         }
         void fillSchema(string tablename, ListView view)
         {
-            System.Data.DataTable tbl = excel.ds.Tables[tablename];
+            System.Data.DataTable tbl = oExcel.Ds.Tables[tablename];
             view.Items.Clear();
             foreach (DataColumn col in tbl.Columns)
             {
@@ -104,7 +106,7 @@ namespace AutoOffice
             }
             string tbl_src = this.cbo_src.SelectedItem.ToString();
             string tbl_dst = this.cbo_dst.SelectedItem.ToString();
-            dt_merge = excel.JoinTable(excel.ds.Tables[tbl_src], excel.ds.Tables[tbl_dst], map);
+            dt_merge = oExcel.JoinTable(oExcel.Ds.Tables[tbl_src], oExcel.Ds.Tables[tbl_dst], map);
 
 
             tp_merge.Text = dt_merge.TableName;
@@ -147,7 +149,7 @@ namespace AutoOffice
             var ok = this.sfd.ShowDialog();
             if (ok == DialogResult.OK)
             {
-                excel.ExportDSToExcel(dt_merge, this.sfd.FileName);
+                oExcel.ExportDSToExcel(dt_merge, this.sfd.FileName);
             }
         }
 
@@ -158,7 +160,7 @@ namespace AutoOffice
             gv_merge.AutoGenerateColumns = true;
 
             string appDir = System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().GetName().CodeBase);
-            web.Url = new Uri(System.IO.Path.Combine(appDir, help[1]));
+            web.Url = new Uri(Path.Combine(new string[] { appDir, "help", help[1] }));
         }
     }
 }

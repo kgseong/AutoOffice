@@ -15,14 +15,14 @@ namespace AutoOffice
 {
     public partial class frm_toForm : Form
     {
-        private FormRepo Db = new FormRepo();
-        private ExcelUtil excel = new ExcelUtil();
+        private FormUtil oForm = new FormUtil();
+        private ExcelUtil oExcel = new ExcelUtil();
 
         private string FormPath { get; set; }
         private string SavePath { get; set; }
 
         TabPage[] tabs;
-        string[] help = { "help_form1.htm", "help_form2.htm", "help_form3.htm", "help_form4.htm" };
+        string[] help = { @"help_form1.htm", @"help_form2.htm", @"help_form2.htm", @"help_form3.htm", @"help_form4.htm" };
         int top = -1;
         int count;
         
@@ -35,7 +35,7 @@ namespace AutoOffice
         {
             this.ofd.Filter = DocFormHelper.Filter_Office;
             //tabs = new TabPage[] { this.tp_selform, this.tp_data, this.tp_map, this.tp_save };
-            tabs = new TabPage[] { this.tp_selform, this.tp_xl_data, this.tp_map, this.tp_save };
+            tabs = new TabPage[] { this.tp_selform, this.tp_xl_data, this.tp_data,  this.tp_map, this.tp_save };
             count = tabs.Length;
             Next();
         }
@@ -59,13 +59,31 @@ namespace AutoOffice
             }
             //tabs[top].Show();
             tab_main.SelectTab(tabs[top]);
-            
+
             string appDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().GetName().CodeBase);
-            web.Url = new Uri(Path.Combine(appDir, help[top]));
+            web.Url = new Uri(Path.Combine(new string[] { appDir, "help", help[top] }));
+           
+            
         }
         private void Back()
         {
+            
             top--;
+            //데이터입력시 선택 엑셀입력폼으로
+            switch(top)
+            {
+                case 1:
+                    top--;
+                    break;
+                case 2:
+                    if (this.chk_data_from_excel.Checked == true) top--;
+                    break;
+            }
+            /*
+            if (top == 2 || top == 1)
+            {
+                if (this.chk_data_from_excel.Checked == true) top--;
+            }*/
 
             if (top <= -1)
             {
@@ -89,8 +107,19 @@ namespace AutoOffice
         }
         private void Next()
         {
-
             top++;
+            //데이터입력시 선택 엑셀입력폼으로
+            switch (top)
+            {
+                case 1:
+                    if (this.chk_data_from_excel.Checked == false) top++;
+                    break;
+                case 2:
+                    top++;
+                    break;
+            }
+            
+
             if (top >= count)
             {
                 return;
@@ -120,7 +149,7 @@ namespace AutoOffice
             {
                 this.txt_form_path.Text = this.ofd.FileName;
                 this.FormPath = this.ofd.FileName;
-                OficeUtil.RunDoc(this.FormPath);
+                //OficeUtil.RunDoc(this.FormPath);
             }
         }
 
@@ -131,17 +160,17 @@ namespace AutoOffice
 
         private void btn_data_Click(object sender, EventArgs e)
         {
-            this.Db.MakeDataSet(this.txt_data_in.Text);
-            this.Db.SetData(this.txt_data_in.Text);
-            this.Db.FindKey();
+            
+            this.oForm.SetData(this.txt_data_in.Text,  this.chk_is_first_head.Checked);
+            this.oForm.FindKey();
 
-            this.colBindingSource.DataSource = this.Db.schema;
-            this.dg_data.DataSource = this.Db.dt;
+            this.colBindingSource.DataSource = this.oForm.Schema;
+            this.dg_data.DataSource = this.oForm.Tbl;
         }
 
         private void tp_map_Leave(object sender, EventArgs e)
         {
-            var msg = this.Db.CheckKey();
+            var msg = this.oForm.CheckKey();
             if (string.IsNullOrEmpty(msg) == false)
             {
                 MessageBox.Show(msg);
@@ -166,17 +195,23 @@ namespace AutoOffice
 
         private string CheckFileDup()
         {
-            foreach (DataRow row in this.Db.dt.Rows)
+            foreach (DataRow row in this.oForm.Tbl.Rows)
             {
-                var items = this.Db.toVals(row, false);
+                var items = this.oForm.toVals(row, false);
+
+                
+                var vals = this.oForm.GetFldValues(items);
+                var file_sufix = vals.Item2;
+                Dictionary<string, string> values = vals.Item1;
+                /*
                 var file_sufix = "";
                 foreach (var item in items)
                 {
-                    if (item.is_key == true)
+                    if (item.isFileName == true)
                     {
-                        file_sufix += "_" + item.value;
+                        file_sufix += "_" + item.Value;
                     }
-                }
+                } */
                 string fname = System.IO.Path.GetFileNameWithoutExtension(this.FormPath) + file_sufix + System.IO.Path.GetExtension(this.FormPath);
                 var fpath = System.IO.Path.Combine(this.SavePath, fname);
 
@@ -210,23 +245,27 @@ namespace AutoOffice
                 return;
             }
 
-            this.progress.Maximum = this.Db.dt.Rows.Count;
-            this.lbl_step.Text = string.Format("0/{0}", this.Db.dt.Rows.Count);
+            this.progress.Maximum = this.oForm.Tbl.Rows.Count;
+            this.lbl_step.Text = string.Format("0/{0}", this.oForm.Tbl.Rows.Count);
 
-            foreach (DataRow row in this.Db.dt.Rows)
+            foreach (DataRow row in this.oForm.Tbl.Rows)
             {
-                var items = this.Db.toVals(row, false);
-                var file_sufix = "";
-                Dictionary<string, string> values = new Dictionary<string, string>();
+                var items = this.oForm.toVals(row, false);
+                var vals = this.oForm.GetFldValues(items);
+                var file_sufix = vals.Item2;
+                Dictionary<string, string> values = vals.Item1;
+                /*
+                //Dictionary<string, string> values = new Dictionary<string, string>();
                 foreach (var item in items)
                 {
-                    values.Add(item.name, item.value);
+                    values.Add(item.FldName, item.Value);
 
-                    if (item.is_key == true)
+                    if (item.isFileName == true)
                     {
-                        file_sufix += "_" + item.value;
+                        file_sufix += "_" + item.Value;
                     }
                 }
+                */
                 string fname = System.IO.Path.GetFileNameWithoutExtension(this.FormPath) + file_sufix + System.IO.Path.GetExtension(this.FormPath);
                 var fpath = System.IO.Path.Combine(this.SavePath, fname);
 
@@ -261,15 +300,16 @@ namespace AutoOffice
             if (ok == DialogResult.OK)
             {
                 this.txt_xlDataFile.Text = this.ofd.FileName;
-                excel.ExcelFile = this.txt_xlDataFile.Text;
-                excel.OpenExcelToDataSet();
+                oExcel.ExcelFile = this.txt_xlDataFile.Text;
+                oExcel.OpenExcelToDataSet();
                 fillData();
+                this.oForm.FindKey();
             }
         }
 
         void fillData()
         {
-            var ds = excel.OpenExcelToDataSet();
+            var ds = oExcel.OpenExcelToDataSet();
             foreach (DataTable tbl in ds.Tables)
             {
                 System.Windows.Forms.TabPage tp = new TabPage();
@@ -293,9 +333,18 @@ namespace AutoOffice
 
         private void cbo_sheet_SelectedIndexChanged(object sender, EventArgs e)
         {
-            this.Db.SetData(this.excel.ds.Tables[this.cbo_sheet.SelectedItem.ToString()]);
-            this.colBindingSource.DataSource = this.Db.schema;
-            this.dg_data.DataSource = this.Db.dt;
+            this.oForm.SetData(this.oExcel.Ds.Tables[this.cbo_sheet.SelectedItem.ToString()].Copy());
+            this.oForm.FindKey();
+            this.colBindingSource.DataSource = this.oForm.Schema;
+            this.dg_data.DataSource = this.oForm.Tbl;
+        }
+
+        private void btn_openForm_Click(object sender, EventArgs e)
+        {
+            if (System.IO.File.Exists(this.FormPath) == true)
+            {
+                OficeUtil.RunDoc(this.FormPath);
+            }
         }
     }
 }

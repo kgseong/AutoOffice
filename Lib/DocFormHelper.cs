@@ -29,7 +29,7 @@ namespace AutoOffice
 
         public static string GetFieldName(string name)
         {
-            return "#" + name + "#";
+            return Field.FldMark + name + Field.FldMark;
         }
 
 

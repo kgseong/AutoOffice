@@ -18,7 +18,7 @@ namespace AutoOffice
 {
     public  class ExcelUtil
     {
-        public DataSet ds { get; set; }
+        public DataSet Ds { get; set; }
         public string ExcelFile { get; set; }
         public DataSet OpenExcelToDataSet()
         {
@@ -30,7 +30,7 @@ namespace AutoOffice
                 OpenXmlElementList lstOpenXmlElements = oSpreadSheetDoc.WorkbookPart.Workbook.ChildElements;
                 foreach (Sheets vSheets in lstOpenXmlElements.OfType<Sheets>())
                 {
-                    ds = new DataSet();
+                    Ds = new DataSet();
 
                     foreach (Sheet vSheet in vSheets)
                     {
@@ -82,18 +82,18 @@ namespace AutoOffice
                                 dt.Rows.Add(dtRow);
                             }
                             dt.Rows.RemoveAt(0);
-                            ds.Tables.Add(dt);
+                            Ds.Tables.Add(dt);
                         }
                     }
                 }
             }
-            return ds;
+            return Ds;
         }
 
         public DataTable SQL(string tableName, string Where )
         {
-            var items = ds.Tables[tableName].Select(Where);
-            DataTable dt = ds.Tables[tableName].Clone();
+            var items = Ds.Tables[tableName].Select(Where);
+            DataTable dt = Ds.Tables[tableName].Clone();
             dt.TableName = "sql_" + tableName;
             foreach(var item in items)
             {
@@ -150,7 +150,7 @@ namespace AutoOffice
 
         public void ExportDSToExcel(DataTable dt, string save_path)
         {
-            var _ds = ds.Copy();
+            var _ds = Ds.Copy();
             _ds.Tables.Add(dt);
             using (var workbook = SpreadsheetDocument.Create(save_path, DocumentFormat.OpenXml.SpreadsheetDocumentType.Workbook))
             {

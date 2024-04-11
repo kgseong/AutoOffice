@@ -15,7 +15,7 @@ namespace AutoOffice
 {
     public partial class frm_Ocr : Form
     {
-        OcrHelper ocr;
+        OcrHelper oOcr;
         public frm_Ocr()
         {
             InitializeComponent();
@@ -26,8 +26,8 @@ namespace AutoOffice
             var ok = this.ofd.ShowDialog();
             if (ok == DialogResult.OK)
             {
-                ocr.ImagePath = this.ofd.FileName;
-                this.picb.Image = Image.FromFile(ocr.ImagePath);
+                oOcr.ImagePath = this.ofd.FileName;
+                this.picb.Image = Image.FromFile(oOcr.ImagePath);
             }
         }
 
@@ -43,8 +43,8 @@ namespace AutoOffice
             {
                 this.cbo_langs.SelectedIndex = 0;
             }
-            ocr = new OcrHelper();
-            ocr.DoneEvent += OnDoneEvent;
+            oOcr = new OcrHelper();
+            oOcr.DoneEvent += OnDoneEvent;
 
         }
 
@@ -62,7 +62,7 @@ namespace AutoOffice
                 return;
             }
             this.Cursor = Cursors.WaitCursor;
-            this.txt_out.Text = ocr.ReadText(this.cbo_langs.Text);
+            this.txt_out.Text = oOcr.ReadText(this.cbo_langs.Text);
         }
     }
 }

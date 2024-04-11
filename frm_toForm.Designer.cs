@@ -36,6 +36,7 @@
             this.web = new System.Windows.Forms.WebBrowser();
             this.tab_main = new System.Windows.Forms.TabControl();
             this.tp_selform = new System.Windows.Forms.TabPage();
+            this.chk_data_from_excel = new System.Windows.Forms.CheckBox();
             this.btn_selform = new System.Windows.Forms.Button();
             this.txt_help_selform = new System.Windows.Forms.RichTextBox();
             this.label2 = new System.Windows.Forms.Label();
@@ -43,6 +44,7 @@
             this.txt_form_path = new System.Windows.Forms.TextBox();
             this.tp_data = new System.Windows.Forms.TabPage();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.chk_is_first_head = new System.Windows.Forms.CheckBox();
             this.txt_help_data = new System.Windows.Forms.RichTextBox();
             this.btn_data = new System.Windows.Forms.Button();
             this.txt_data_in = new System.Windows.Forms.RichTextBox();
@@ -52,7 +54,7 @@
             this.label3 = new System.Windows.Forms.Label();
             this.dg_schema = new System.Windows.Forms.DataGridView();
             this.colidxDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.column_name = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColumnName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.nameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.iskeyDataGridViewCheckBoxColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.colBindingSource = new System.Windows.Forms.BindingSource(this.components);
@@ -79,6 +81,7 @@
             this.btnNext = new System.Windows.Forms.Button();
             this.ofd = new System.Windows.Forms.OpenFileDialog();
             this.fbd = new System.Windows.Forms.FolderBrowserDialog();
+            this.btn_openForm = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pnl_top)).BeginInit();
             this.pnl_top.Panel1.SuspendLayout();
             this.pnl_top.Panel2.SuspendLayout();
@@ -179,6 +182,8 @@
             // 
             // tp_selform
             // 
+            this.tp_selform.Controls.Add(this.btn_openForm);
+            this.tp_selform.Controls.Add(this.chk_data_from_excel);
             this.tp_selform.Controls.Add(this.btn_selform);
             this.tp_selform.Controls.Add(this.txt_help_selform);
             this.tp_selform.Controls.Add(this.label2);
@@ -192,12 +197,25 @@
             this.tp_selform.Text = "양식선택";
             this.tp_selform.UseVisualStyleBackColor = true;
             // 
+            // chk_data_from_excel
+            // 
+            this.chk_data_from_excel.AutoSize = true;
+            this.chk_data_from_excel.Checked = true;
+            this.chk_data_from_excel.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chk_data_from_excel.Font = new System.Drawing.Font("굴림", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.chk_data_from_excel.Location = new System.Drawing.Point(42, 381);
+            this.chk_data_from_excel.Name = "chk_data_from_excel";
+            this.chk_data_from_excel.Size = new System.Drawing.Size(265, 20);
+            this.chk_data_from_excel.TabIndex = 11;
+            this.chk_data_from_excel.Text = "엑셀파일을 선택하여 데이터 입력";
+            this.chk_data_from_excel.UseVisualStyleBackColor = true;
+            // 
             // btn_selform
             // 
             this.btn_selform.Font = new System.Drawing.Font("굴림", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.btn_selform.Location = new System.Drawing.Point(49, 318);
+            this.btn_selform.Location = new System.Drawing.Point(42, 259);
             this.btn_selform.Name = "btn_selform";
-            this.btn_selform.Size = new System.Drawing.Size(634, 52);
+            this.btn_selform.Size = new System.Drawing.Size(425, 52);
             this.btn_selform.TabIndex = 6;
             this.btn_selform.Text = "양식파일선택";
             this.btn_selform.UseVisualStyleBackColor = true;
@@ -207,7 +225,7 @@
             // 
             this.txt_help_selform.BackColor = System.Drawing.Color.Khaki;
             this.txt_help_selform.Font = new System.Drawing.Font("굴림", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.txt_help_selform.Location = new System.Drawing.Point(49, 137);
+            this.txt_help_selform.Location = new System.Drawing.Point(42, 78);
             this.txt_help_selform.Name = "txt_help_selform";
             this.txt_help_selform.Size = new System.Drawing.Size(634, 164);
             this.txt_help_selform.TabIndex = 10;
@@ -219,7 +237,7 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("굴림", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.label2.Location = new System.Drawing.Point(290, 96);
+            this.label2.Location = new System.Drawing.Point(283, 37);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(194, 21);
             this.label2.TabIndex = 9;
@@ -229,7 +247,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("굴림", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.label1.Location = new System.Drawing.Point(46, 385);
+            this.label1.Location = new System.Drawing.Point(39, 326);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(103, 16);
             this.label1.TabIndex = 8;
@@ -237,8 +255,9 @@
             // 
             // txt_form_path
             // 
-            this.txt_form_path.Location = new System.Drawing.Point(154, 380);
+            this.txt_form_path.Location = new System.Drawing.Point(147, 321);
             this.txt_form_path.Name = "txt_form_path";
+            this.txt_form_path.ReadOnly = true;
             this.txt_form_path.Size = new System.Drawing.Size(529, 21);
             this.txt_form_path.TabIndex = 7;
             // 
@@ -263,6 +282,7 @@
             // 
             // splitContainer1.Panel1
             // 
+            this.splitContainer1.Panel1.Controls.Add(this.chk_is_first_head);
             this.splitContainer1.Panel1.Controls.Add(this.txt_help_data);
             this.splitContainer1.Panel1.Controls.Add(this.btn_data);
             this.splitContainer1.Panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.splitContainer1_Panel1_Paint);
@@ -273,6 +293,18 @@
             this.splitContainer1.Size = new System.Drawing.Size(724, 490);
             this.splitContainer1.SplitterDistance = 71;
             this.splitContainer1.TabIndex = 2;
+            // 
+            // chk_is_first_head
+            // 
+            this.chk_is_first_head.AutoSize = true;
+            this.chk_is_first_head.Checked = true;
+            this.chk_is_first_head.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chk_is_first_head.Location = new System.Drawing.Point(12, 50);
+            this.chk_is_first_head.Name = "chk_is_first_head";
+            this.chk_is_first_head.Size = new System.Drawing.Size(116, 16);
+            this.chk_is_first_head.TabIndex = 2;
+            this.chk_is_first_head.Text = "첫행 머리글 포함";
+            this.chk_is_first_head.UseVisualStyleBackColor = true;
             // 
             // txt_help_data
             // 
@@ -289,7 +321,7 @@
             this.btn_data.Font = new System.Drawing.Font("굴림", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.btn_data.Location = new System.Drawing.Point(12, 12);
             this.btn_data.Name = "btn_data";
-            this.btn_data.Size = new System.Drawing.Size(131, 56);
+            this.btn_data.Size = new System.Drawing.Size(131, 31);
             this.btn_data.TabIndex = 0;
             this.btn_data.Text = "데이터입력";
             this.btn_data.UseVisualStyleBackColor = true;
@@ -368,7 +400,7 @@
             this.dg_schema.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dg_schema.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.colidxDataGridViewTextBoxColumn,
-            this.column_name,
+            this.ColumnName,
             this.nameDataGridViewTextBoxColumn,
             this.iskeyDataGridViewCheckBoxColumn});
             this.dg_schema.DataSource = this.colBindingSource;
@@ -381,23 +413,23 @@
             // 
             // colidxDataGridViewTextBoxColumn
             // 
-            this.colidxDataGridViewTextBoxColumn.DataPropertyName = "col_idx";
+            this.colidxDataGridViewTextBoxColumn.DataPropertyName = "FldIdx";
             this.colidxDataGridViewTextBoxColumn.HeaderText = "*";
             this.colidxDataGridViewTextBoxColumn.Name = "colidxDataGridViewTextBoxColumn";
             this.colidxDataGridViewTextBoxColumn.ReadOnly = true;
-            this.colidxDataGridViewTextBoxColumn.ToolTipText = "데이터순번(1부터 시작)";
+            this.colidxDataGridViewTextBoxColumn.ToolTipText = "데이터순번";
             this.colidxDataGridViewTextBoxColumn.Width = 30;
             // 
-            // column_name
+            // ColumnName
             // 
-            this.column_name.DataPropertyName = "column_name";
-            this.column_name.HeaderText = "데이터컬럼";
-            this.column_name.Name = "column_name";
-            this.column_name.ReadOnly = true;
+            this.ColumnName.DataPropertyName = "ColumnName";
+            this.ColumnName.HeaderText = "데이터컬럼";
+            this.ColumnName.Name = "ColumnName";
+            this.ColumnName.ReadOnly = true;
             // 
             // nameDataGridViewTextBoxColumn
             // 
-            this.nameDataGridViewTextBoxColumn.DataPropertyName = "name";
+            this.nameDataGridViewTextBoxColumn.DataPropertyName = "FldName";
             dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.nameDataGridViewTextBoxColumn.DefaultCellStyle = dataGridViewCellStyle1;
             this.nameDataGridViewTextBoxColumn.HeaderText = "양식필드명";
@@ -406,7 +438,7 @@
             // 
             // iskeyDataGridViewCheckBoxColumn
             // 
-            this.iskeyDataGridViewCheckBoxColumn.DataPropertyName = "is_key";
+            this.iskeyDataGridViewCheckBoxColumn.DataPropertyName = "isFileName";
             this.iskeyDataGridViewCheckBoxColumn.HeaderText = "파일명";
             this.iskeyDataGridViewCheckBoxColumn.Name = "iskeyDataGridViewCheckBoxColumn";
             this.iskeyDataGridViewCheckBoxColumn.ToolTipText = "저장시 해당 데이터가 파일명으로 사용됨";
@@ -414,7 +446,7 @@
             // 
             // colBindingSource
             // 
-            this.colBindingSource.DataSource = typeof(AutoOffice.col);
+            this.colBindingSource.DataSource = typeof(AutoOffice.Field);
             // 
             // dg_data
             // 
@@ -447,6 +479,7 @@
             // 
             this.txt_save_path.Location = new System.Drawing.Point(198, 227);
             this.txt_save_path.Name = "txt_save_path";
+            this.txt_save_path.ReadOnly = true;
             this.txt_save_path.Size = new System.Drawing.Size(444, 21);
             this.txt_save_path.TabIndex = 9;
             // 
@@ -555,6 +588,7 @@
             // 
             this.txt_xlDataFile.Location = new System.Drawing.Point(206, 10);
             this.txt_xlDataFile.Name = "txt_xlDataFile";
+            this.txt_xlDataFile.ReadOnly = true;
             this.txt_xlDataFile.Size = new System.Drawing.Size(492, 21);
             this.txt_xlDataFile.TabIndex = 3;
             // 
@@ -645,6 +679,17 @@
             // 
             this.ofd.Filter = "MS Office Files|*.xls;*.xlsx;*.doc;*.docx;*.ppt;*.pptx";
             // 
+            // btn_openForm
+            // 
+            this.btn_openForm.Font = new System.Drawing.Font("굴림", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.btn_openForm.Location = new System.Drawing.Point(486, 259);
+            this.btn_openForm.Name = "btn_openForm";
+            this.btn_openForm.Size = new System.Drawing.Size(190, 52);
+            this.btn_openForm.TabIndex = 12;
+            this.btn_openForm.Text = "양식파일열어보기";
+            this.btn_openForm.UseVisualStyleBackColor = true;
+            this.btn_openForm.Click += new System.EventHandler(this.btn_openForm_Click);
+            // 
             // frm_toForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
@@ -668,6 +713,7 @@
             this.tp_selform.PerformLayout();
             this.tp_data.ResumeLayout(false);
             this.splitContainer1.Panel1.ResumeLayout(false);
+            this.splitContainer1.Panel1.PerformLayout();
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
@@ -747,5 +793,9 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn column_name;
         private System.Windows.Forms.DataGridViewTextBoxColumn nameDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewCheckBoxColumn iskeyDataGridViewCheckBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnName;
+        private System.Windows.Forms.CheckBox chk_is_first_head;
+        private System.Windows.Forms.CheckBox chk_data_from_excel;
+        private System.Windows.Forms.Button btn_openForm;
     }
 }

@@ -49,12 +49,17 @@ namespace AutoOffice
             //var file = @"B:\Data\Temp\양식테스트\휴학원.docx";
             //OficeUtil.RunDoc(file);
 
-            (new frm_Ocr()).Show();
+            (new frm_Rx()).Show();
         }
 
         private void btn_Ocr_Click(object sender, EventArgs e)
         {
             (new frm_Ocr()).Show();
+        }
+
+        private void btn_find_pattern_Click(object sender, EventArgs e)
+        {
+            (new frm_Rx()).Show();
         }
     }
 }
