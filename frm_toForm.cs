@@ -15,14 +15,14 @@ namespace AutoOffice
 {
     public partial class frm_toForm : Form
     {
-        private FormUtil oForm = new FormUtil();
+        private FormData oForm = new FormData();
         private ExcelUtil oExcel = new ExcelUtil();
 
         private string FormPath { get; set; }
         private string SavePath { get; set; }
 
         TabPage[] tabs;
-        string[] help = { @"help_form1.htm", @"help_form2.htm", @"help_form2.htm", @"help_form3.htm", @"help_form4.htm" };
+        string[] help = { @"help_toform_1.htm", @"help_toform_2-1.htm", @"help_toform_2-2.htm", @"help_toform_3.htm", @"help_toform_4.htm" };
         int top = -1;
         int count;
         
@@ -33,7 +33,7 @@ namespace AutoOffice
 
         private void frm_form_main_Load(object sender, EventArgs e)
         {
-            this.ofd.Filter = DocFormHelper.Filter_Office;
+            this.ofd.Filter = Helper.Filter_Office;
             //tabs = new TabPage[] { this.tp_selform, this.tp_data, this.tp_map, this.tp_save };
             tabs = new TabPage[] { this.tp_selform, this.tp_xl_data, this.tp_data,  this.tp_map, this.tp_save };
             count = tabs.Length;
@@ -143,7 +143,7 @@ namespace AutoOffice
 
         private void btn_selform_Click(object sender, EventArgs e)
         {
-            this.ofd.Filter = DocFormHelper.Filter_Office;
+            this.ofd.Filter = Helper.Filter_All;
             var ok = this.ofd.ShowDialog();
             if (ok == DialogResult.OK)
             {
@@ -164,16 +164,16 @@ namespace AutoOffice
             this.oForm.SetData(this.txt_data_in.Text,  this.chk_is_first_head.Checked);
             this.oForm.FindKey();
 
-            this.colBindingSource.DataSource = this.oForm.Schema;
+            this.colBindingSource.DataSource = this.oForm.FldSchema;
             this.dg_data.DataSource = this.oForm.Tbl;
         }
 
         private void tp_map_Leave(object sender, EventArgs e)
         {
-            var msg = this.oForm.CheckKey();
-            if (string.IsNullOrEmpty(msg) == false)
+            var ok = this.oForm.CheckKey();
+            if (ok.Item1 == false)
             {
-                MessageBox.Show(msg);
+                MessageBox.Show(ok.Item2);
                 return;
             }
         }
@@ -197,7 +197,7 @@ namespace AutoOffice
         {
             foreach (DataRow row in this.oForm.Tbl.Rows)
             {
-                var items = this.oForm.toVals(row, false);
+                var items = this.oForm.RowToField(row, false);
 
                 
                 var vals = this.oForm.GetFldValues(items);
@@ -250,7 +250,7 @@ namespace AutoOffice
 
             foreach (DataRow row in this.oForm.Tbl.Rows)
             {
-                var items = this.oForm.toVals(row, false);
+                var items = this.oForm.RowToField(row, false);
                 var vals = this.oForm.GetFldValues(items);
                 var file_sufix = vals.Item2;
                 Dictionary<string, string> values = vals.Item1;
@@ -269,7 +269,8 @@ namespace AutoOffice
                 string fname = System.IO.Path.GetFileNameWithoutExtension(this.FormPath) + file_sufix + System.IO.Path.GetExtension(this.FormPath);
                 var fpath = System.IO.Path.Combine(this.SavePath, fname);
 
-                var doc = DocFormHelper.GetDoc(this.FormPath, fpath);
+                //var doc = Helper.GetDoc(this.FormPath, fpath);
+                var doc = DocFormBase.GetDoc(this.FormPath, fpath);
                 doc.DoneEvent += OnDoneEvent;
                 doc.FillData(values);
 
@@ -295,13 +296,13 @@ namespace AutoOffice
 
         private void btn_sel_xlDataFile_Click(object sender, EventArgs e)
         {
-            this.ofd.Filter = DocFormHelper.Filter_Excel;
+            this.ofd.Filter = Helper.Filter_Excel;
             var ok = this.ofd.ShowDialog();
             if (ok == DialogResult.OK)
             {
                 this.txt_xlDataFile.Text = this.ofd.FileName;
                 oExcel.ExcelFile = this.txt_xlDataFile.Text;
-                oExcel.OpenExcelToDataSet();
+                oExcel.ExcelToDataSet();
                 fillData();
                 this.oForm.FindKey();
             }
@@ -309,7 +310,7 @@ namespace AutoOffice
 
         void fillData()
         {
-            var ds = oExcel.OpenExcelToDataSet();
+            var ds = oExcel.ExcelToDataSet();
             foreach (DataTable tbl in ds.Tables)
             {
                 System.Windows.Forms.TabPage tp = new TabPage();
@@ -335,7 +336,7 @@ namespace AutoOffice
         {
             this.oForm.SetData(this.oExcel.Ds.Tables[this.cbo_sheet.SelectedItem.ToString()].Copy());
             this.oForm.FindKey();
-            this.colBindingSource.DataSource = this.oForm.Schema;
+            this.colBindingSource.DataSource = this.oForm.FldSchema;
             this.dg_data.DataSource = this.oForm.Tbl;
         }
 
@@ -343,7 +344,7 @@ namespace AutoOffice
         {
             if (System.IO.File.Exists(this.FormPath) == true)
             {
-                OficeUtil.RunDoc(this.FormPath);
+                Helper.OpenDoc(this.FormPath);
             }
         }
     }

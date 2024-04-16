@@ -6,13 +6,16 @@ using System.Threading.Tasks;
 
 namespace AutoOffice
 {
+    /// <summary>
+    /// Document Type
+    /// </summary>
     public enum DocType
     {
         None,
-        Word,
-        Xls,
-        Ppt,
-        Hwp,
-        Pdf
+        Word,   //doc, docx
+        Xls,    //xls, xlsx
+        Ppt,    //ppt, pptx
+        Hwp,    //hwp, hwpx
+        Pdf,    //pdf
     }
 }

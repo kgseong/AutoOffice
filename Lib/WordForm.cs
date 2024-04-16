@@ -18,19 +18,17 @@ using DocumentFormat.OpenXml.Wordprocessing;
 
 namespace AutoOffice
 {
-    internal class WordForm: IDocForm
+    internal class WordForm: DocFormBase
     {
-
-        public event EventHandler<DoneArgs> DoneEvent;
-        public string FormFilePath { get; set; }
-        public string SaveAsPath { get; set; }
         List<Tuple<string, int, int, int, int>> exField { get; set; }
-        public WordForm(string formFilePth, string saveAsPath)
+
+        public WordForm(string formFilePth, string saveAsPath) : base(formFilePth, saveAsPath)
         {
-            FormFilePath = formFilePth;
-            SaveAsPath = saveAsPath;
+          
         }
-        public bool FillData(Dictionary<string, string> values)
+  
+
+        public override bool FillData(Dictionary<string, string> values)
         {
             System.IO.File.Copy(FormFilePath, SaveAsPath);
 
@@ -45,7 +43,7 @@ namespace AutoOffice
                     var text = texts[i];
                     foreach (var key in values.Keys)
                     {
-                        var _key = DocFormHelper.GetFieldName(key);
+                        var _key = GetFieldName(key);
                         if (text.Text.Contains(_key))
                         {
                             text.Text = text.Text.Replace(_key, values[key]);
@@ -61,7 +59,7 @@ namespace AutoOffice
                 {
                     foreach (var key in values.Keys)
                     {
-                        var _key = DocFormHelper.GetFieldName(key);
+                        var _key = GetFieldName(key);
                         if (fld.Item1.Contains(_key))
                         {
                             string text = texts[fld.Item2].Text;
@@ -93,7 +91,7 @@ namespace AutoOffice
         
             return true;
         }
-
+        
         private List<Tuple<string, int, int, int, int>> FindField(List<Text> texts)
         {
 
@@ -106,8 +104,10 @@ namespace AutoOffice
                 var text = texts[i];
                
                     string _txt = text.Text;
-                    Debug.Print("{0} : {1}", i, _txt);
-                    if (_txt.Contains("#") == true)
+#if DEBUG
+                Debug.Print("{0} : {1}", i, _txt);
+#endif
+                if (_txt.Contains("#") == true)
                     {
                         fldmark_cnt += 1;
                         //필드시작
@@ -117,12 +117,13 @@ namespace AutoOffice
                                 _fld = _txt;
                                 idx_s = i;
                                 idx_sp = _txt.IndexOf('#');
-                                Debug.Print("s : {0} / {1} / {2} / {3} / {4}", _fld, idx_s, idx_sp, idx_e, idx_ep);
-                            }
+#if DEBUG
+                            Debug.Print("s : {0} / {1} / {2} / {3} / {4}", _fld, idx_s, idx_sp, idx_e, idx_ep);
+#endif
+                        }
                             else
                             {
                                 //리셋
-                                
                                 idx_s = -1; idx_sp = -1; idx_e = -1; idx_ep = -1;
                                 fldmark_cnt = 0;
                                 _fld = "";
@@ -135,10 +136,12 @@ namespace AutoOffice
 
                             //필드발견
                             items.Add(new Tuple<string, int, int, int, int>(_fld, idx_s, idx_sp, idx_e, idx_ep));
-                            Debug.Print("e : {0} / {1} / {2} / {3} / {4}", _fld, idx_s, idx_sp, idx_e, idx_ep);
-                            //리셋
-                            
-                            idx_s = -1; idx_sp = -1; idx_e = -1; idx_ep = -1;
+#if DEBUG
+                        Debug.Print("e : {0} / {1} / {2} / {3} / {4}", _fld, idx_s, idx_sp, idx_e, idx_ep);
+#endif
+                        //리셋
+
+                        idx_s = -1; idx_sp = -1; idx_e = -1; idx_ep = -1;
                             fldmark_cnt = 0;
                             _fld = "";
                         }
@@ -160,14 +163,5 @@ namespace AutoOffice
 
         }
 
-        protected virtual void OnDoneEvent(DoneArgs e)
-        {
-            EventHandler<DoneArgs> raiseEvent = DoneEvent;
-
-            if (raiseEvent != null)
-            {
-                raiseEvent(this, e);
-            }
-        }
     }
 }

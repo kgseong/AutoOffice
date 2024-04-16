@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace AutoOffice
 {
+    /// <summary>
+    /// Event Args for job is done
+    /// </summary>
     public class DoneArgs : EventArgs
     {
         public string FileName { get; set; }

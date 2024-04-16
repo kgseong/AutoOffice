@@ -133,9 +133,9 @@
             this.label4.Font = new System.Drawing.Font("굴림", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.label4.Location = new System.Drawing.Point(488, 91);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(150, 16);
+            this.label4.Size = new System.Drawing.Size(164, 16);
             this.label4.TabIndex = 19;
-            this.label4.Text = "시트간 열 맵핑 정보";
+            this.label4.Text = "4.시트간 열 맵핑 정보";
             // 
             // btn_save
             // 
@@ -144,7 +144,7 @@
             this.btn_save.Name = "btn_save";
             this.btn_save.Size = new System.Drawing.Size(214, 30);
             this.btn_save.TabIndex = 18;
-            this.btn_save.Text = "결과저장하기";
+            this.btn_save.Text = "6.결과저장하기";
             this.btn_save.UseVisualStyleBackColor = true;
             this.btn_save.Click += new System.EventHandler(this.btn_save_Click);
             // 
@@ -155,12 +155,13 @@
             this.btn_merge.Name = "btn_merge";
             this.btn_merge.Size = new System.Drawing.Size(214, 30);
             this.btn_merge.TabIndex = 13;
-            this.btn_merge.Text = "시트합치기실행";
+            this.btn_merge.Text = "5.시트합치기실행";
             this.btn_merge.UseVisualStyleBackColor = true;
             this.btn_merge.Click += new System.EventHandler(this.btn_merge_Click);
             // 
             // txt_map
             // 
+            this.txt_map.BackColor = System.Drawing.Color.Khaki;
             this.txt_map.Location = new System.Drawing.Point(491, 110);
             this.txt_map.Name = "txt_map";
             this.txt_map.Size = new System.Drawing.Size(232, 110);
@@ -173,9 +174,9 @@
             this.label2.Font = new System.Drawing.Font("굴림", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.label2.Location = new System.Drawing.Point(259, 58);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(113, 16);
+            this.label2.Size = new System.Drawing.Size(126, 16);
             this.label2.TabIndex = 16;
-            this.label2.Text = "대상 엑셀 시트";
+            this.label2.Text = "3.대상 엑셀 시트";
             // 
             // label1
             // 
@@ -183,9 +184,9 @@
             this.label1.Font = new System.Drawing.Font("굴림", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.label1.Location = new System.Drawing.Point(35, 58);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(113, 16);
+            this.label1.Size = new System.Drawing.Size(126, 16);
             this.label1.TabIndex = 15;
-            this.label1.Text = "기준 액셀 시트";
+            this.label1.Text = "2.기준 액셀 시트";
             // 
             // lst_dst
             // 
@@ -260,7 +261,7 @@
             this.btn_sel_file.Name = "btn_sel_file";
             this.btn_sel_file.Size = new System.Drawing.Size(136, 34);
             this.btn_sel_file.TabIndex = 3;
-            this.btn_sel_file.Text = "엑셀파일 선택";
+            this.btn_sel_file.Text = "1.엑셀파일 선택";
             this.btn_sel_file.UseVisualStyleBackColor = true;
             this.btn_sel_file.Click += new System.EventHandler(this.btn_sel_file_Click);
             // 

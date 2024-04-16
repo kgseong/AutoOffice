@@ -30,6 +30,7 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMain));
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.btn_find_pattern = new System.Windows.Forms.Button();
             this.btn_Ocr = new System.Windows.Forms.Button();
             this.btn_PdfMerge = new System.Windows.Forms.Button();
             this.btn_toPdf = new System.Windows.Forms.Button();
@@ -37,8 +38,7 @@
             this.btn_Xl_Merge = new System.Windows.Forms.Button();
             this.btn_Form = new System.Windows.Forms.Button();
             this.btn_test01 = new System.Windows.Forms.Button();
-            this.txt_help = new System.Windows.Forms.RichTextBox();
-            this.btn_find_pattern = new System.Windows.Forms.Button();
+            this.web = new System.Windows.Forms.WebBrowser();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -54,16 +54,28 @@
             this.groupBox1.Font = new System.Drawing.Font("굴림", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.groupBox1.Location = new System.Drawing.Point(28, 38);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(428, 557);
+            this.groupBox1.Size = new System.Drawing.Size(384, 712);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "오피스 유틸리티";
+            // 
+            // btn_find_pattern
+            // 
+            this.btn_find_pattern.BackColor = System.Drawing.Color.Khaki;
+            this.btn_find_pattern.Font = new System.Drawing.Font("굴림", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.btn_find_pattern.Location = new System.Drawing.Point(23, 447);
+            this.btn_find_pattern.Name = "btn_find_pattern";
+            this.btn_find_pattern.Size = new System.Drawing.Size(336, 61);
+            this.btn_find_pattern.TabIndex = 6;
+            this.btn_find_pattern.Text = "엑셀에서 패턴 데이터 찾기";
+            this.btn_find_pattern.UseVisualStyleBackColor = false;
+            this.btn_find_pattern.Click += new System.EventHandler(this.btn_find_pattern_Click);
             // 
             // btn_Ocr
             // 
             this.btn_Ocr.BackColor = System.Drawing.Color.Khaki;
             this.btn_Ocr.Font = new System.Drawing.Font("굴림", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.btn_Ocr.Location = new System.Drawing.Point(47, 389);
+            this.btn_Ocr.Location = new System.Drawing.Point(23, 380);
             this.btn_Ocr.Name = "btn_Ocr";
             this.btn_Ocr.Size = new System.Drawing.Size(336, 61);
             this.btn_Ocr.TabIndex = 5;
@@ -75,7 +87,7 @@
             // 
             this.btn_PdfMerge.BackColor = System.Drawing.Color.Khaki;
             this.btn_PdfMerge.Font = new System.Drawing.Font("굴림", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.btn_PdfMerge.Location = new System.Drawing.Point(47, 321);
+            this.btn_PdfMerge.Location = new System.Drawing.Point(23, 312);
             this.btn_PdfMerge.Name = "btn_PdfMerge";
             this.btn_PdfMerge.Size = new System.Drawing.Size(336, 61);
             this.btn_PdfMerge.TabIndex = 4;
@@ -87,7 +99,7 @@
             // 
             this.btn_toPdf.BackColor = System.Drawing.Color.Khaki;
             this.btn_toPdf.Font = new System.Drawing.Font("굴림", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.btn_toPdf.Location = new System.Drawing.Point(47, 254);
+            this.btn_toPdf.Location = new System.Drawing.Point(23, 245);
             this.btn_toPdf.Name = "btn_toPdf";
             this.btn_toPdf.Size = new System.Drawing.Size(336, 61);
             this.btn_toPdf.TabIndex = 3;
@@ -99,7 +111,7 @@
             // 
             this.btn_toPrint.BackColor = System.Drawing.Color.Khaki;
             this.btn_toPrint.Font = new System.Drawing.Font("굴림", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.btn_toPrint.Location = new System.Drawing.Point(47, 187);
+            this.btn_toPrint.Location = new System.Drawing.Point(23, 178);
             this.btn_toPrint.Name = "btn_toPrint";
             this.btn_toPrint.Size = new System.Drawing.Size(336, 61);
             this.btn_toPrint.TabIndex = 2;
@@ -111,7 +123,7 @@
             // 
             this.btn_Xl_Merge.BackColor = System.Drawing.Color.Khaki;
             this.btn_Xl_Merge.Font = new System.Drawing.Font("굴림", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.btn_Xl_Merge.Location = new System.Drawing.Point(47, 120);
+            this.btn_Xl_Merge.Location = new System.Drawing.Point(23, 111);
             this.btn_Xl_Merge.Name = "btn_Xl_Merge";
             this.btn_Xl_Merge.Size = new System.Drawing.Size(336, 61);
             this.btn_Xl_Merge.TabIndex = 1;
@@ -123,7 +135,7 @@
             // 
             this.btn_Form.BackColor = System.Drawing.Color.Khaki;
             this.btn_Form.Font = new System.Drawing.Font("굴림", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.btn_Form.Location = new System.Drawing.Point(47, 53);
+            this.btn_Form.Location = new System.Drawing.Point(23, 44);
             this.btn_Form.Name = "btn_Form";
             this.btn_Form.Size = new System.Drawing.Size(336, 61);
             this.btn_Form.TabIndex = 0;
@@ -133,7 +145,7 @@
             // 
             // btn_test01
             // 
-            this.btn_test01.Location = new System.Drawing.Point(937, 7);
+            this.btn_test01.Location = new System.Drawing.Point(937, -2);
             this.btn_test01.Name = "btn_test01";
             this.btn_test01.Size = new System.Drawing.Size(115, 44);
             this.btn_test01.TabIndex = 6;
@@ -142,40 +154,27 @@
             this.btn_test01.Visible = false;
             this.btn_test01.Click += new System.EventHandler(this.btn_test01_Click);
             // 
-            // txt_help
+            // web
             // 
-            this.txt_help.BackColor = System.Drawing.Color.Cornsilk;
-            this.txt_help.Font = new System.Drawing.Font("굴림", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.txt_help.Location = new System.Drawing.Point(475, 57);
-            this.txt_help.Name = "txt_help";
-            this.txt_help.Size = new System.Drawing.Size(589, 489);
-            this.txt_help.TabIndex = 1;
-            this.txt_help.Text = resources.GetString("txt_help.Text");
-            // 
-            // btn_find_pattern
-            // 
-            this.btn_find_pattern.BackColor = System.Drawing.Color.Khaki;
-            this.btn_find_pattern.Font = new System.Drawing.Font("굴림", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.btn_find_pattern.Location = new System.Drawing.Point(47, 456);
-            this.btn_find_pattern.Name = "btn_find_pattern";
-            this.btn_find_pattern.Size = new System.Drawing.Size(336, 61);
-            this.btn_find_pattern.TabIndex = 6;
-            this.btn_find_pattern.Text = "엑셀에서 패턴 데이터 찾기";
-            this.btn_find_pattern.UseVisualStyleBackColor = false;
-            this.btn_find_pattern.Click += new System.EventHandler(this.btn_find_pattern_Click);
+            this.web.Location = new System.Drawing.Point(423, 48);
+            this.web.MinimumSize = new System.Drawing.Size(20, 20);
+            this.web.Name = "web";
+            this.web.Size = new System.Drawing.Size(765, 702);
+            this.web.TabIndex = 7;
             // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1092, 626);
+            this.ClientSize = new System.Drawing.Size(1224, 761);
+            this.Controls.Add(this.web);
             this.Controls.Add(this.btn_test01);
-            this.Controls.Add(this.txt_help);
             this.Controls.Add(this.groupBox1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "frmMain";
             this.Text = "MS 오피스 유틸리티";
+            this.Load += new System.EventHandler(this.frmMain_Load);
             this.groupBox1.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -188,10 +187,10 @@
         private System.Windows.Forms.Button btn_toPrint;
         private System.Windows.Forms.Button btn_Xl_Merge;
         private System.Windows.Forms.Button btn_Form;
-        private System.Windows.Forms.RichTextBox txt_help;
         private System.Windows.Forms.Button btn_PdfMerge;
         private System.Windows.Forms.Button btn_test01;
         private System.Windows.Forms.Button btn_Ocr;
         private System.Windows.Forms.Button btn_find_pattern;
+        private System.Windows.Forms.WebBrowser web;
     }
 }

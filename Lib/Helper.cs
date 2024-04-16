@@ -17,7 +17,7 @@ using DocumentFormat.OpenXml.Drawing.Diagrams;
 namespace AutoOffice
 {
 
-    public static class DocFormHelper
+    public static class Helper
     {
         public static string Filter_Office = "문서파일|*.xls;*.xlsx;*.doc;*.docx;*.ppt;*.pptx";
         public static string Filter_Excel = "엑셀파일|*.xls;*.xlsx";
@@ -27,40 +27,7 @@ namespace AutoOffice
         public static string Filter_Hwp = "한글파일|*.hwpx";
         public static string Filter_All = "오피스파일|*.xls;*.xlsx;*.doc;*.docx;*.ppt;*.pptx;*.pdf;*.hwpx";
 
-        public static string GetFieldName(string name)
-        {
-            return Field.FldMark + name + Field.FldMark;
-        }
-
-
-        //static string[] heads = { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z" };
-
-        public static IDocForm GetDoc(string formpath, string savepath)
-        {
-            string ext = System.IO.Path.GetExtension(formpath).ToLower();
-            var doctp = GetDocType(formpath);
-            IDocForm doc;
-            switch (doctp)
-            {
-                case DocType.Word:
-                    doc = new WordForm(formpath, savepath);
-                    return doc;
-                    break;
-                case DocType.Xls:
-                    doc = new XlsForm(formpath, savepath);
-                    return doc;
-                    break;
-                case DocType.Ppt:
-                    doc = new PptForm(formpath, savepath);
-                    return doc;
-                    break;
-                case DocType.Hwp:
-                    doc = new HwpForm(formpath, savepath);
-                    return doc;
-                    break;
-            }
-            return null;
-        }
+     
         public static DocType GetDocType(string filename)
         {
             string ext = System.IO.Path.GetExtension(filename).ToLower();
@@ -86,6 +53,37 @@ namespace AutoOffice
             }
 
             return doc;
+        }
+
+        public static  bool RawPrint(string src_path)
+        {
+            using (System.Diagnostics.Process p = new System.Diagnostics.Process())
+            {
+                p.StartInfo = new System.Diagnostics.ProcessStartInfo()
+                {
+                    CreateNoWindow = true,
+                    Verb = "print",
+                    FileName = src_path //put the correct path here
+                };
+                p.Start();
+            }
+            return true;
+        }
+        public static void OpenDoc(string src_path)
+        {
+            try
+            {
+                using (System.Diagnostics.Process p = new System.Diagnostics.Process())
+                {
+                    p.StartInfo = new System.Diagnostics.ProcessStartInfo()
+                    {
+                        CreateNoWindow = true,
+                        FileName = src_path //put the correct path here
+                    };
+                    p.Start();
+                }
+            }
+            catch { }
         }
 
         public static string[] GetValidDocList(string[] files, DocType[] doctyps)

@@ -10,19 +10,14 @@ using System.IO.Compression;
 
 namespace AutoOffice
 {
-    internal class HwpForm: IDocForm
+    internal class HwpForm: DocFormBase
     {
-
-        public event EventHandler<DoneArgs> DoneEvent;
-        public string FormFilePath { get; set; }
-        public string SaveAsPath { get; set; }
-
-        public HwpForm(string formFilePth, string saveAsPath)
+       
+        public HwpForm(string formFilePth, string saveAsPath) : base(formFilePth, saveAsPath)
         {
-            FormFilePath = formFilePth;
-            SaveAsPath = saveAsPath;
+         
         }
-        public bool FillData(Dictionary<string, string> values)
+        public override bool FillData(Dictionary<string, string> values)
         {
             System.IO.File.Copy(FormFilePath, SaveAsPath);
 
@@ -47,7 +42,7 @@ namespace AutoOffice
 
                             foreach (var key in values.Keys)
                             {
-                                var _key = DocFormHelper.GetFieldName(key);
+                                var _key = GetFieldName(key);
                                 content = content.Replace(_key, values[key]);
                             }
                             
@@ -65,16 +60,6 @@ namespace AutoOffice
         }
 
       
-       
-
-        protected virtual void OnDoneEvent(DoneArgs e)
-        {
-            EventHandler<DoneArgs> raiseEvent = DoneEvent;
-
-            if (raiseEvent != null)
-            {
-                raiseEvent(this, e);
-            }
-        }
+    
     }
 }

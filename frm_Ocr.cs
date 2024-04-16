@@ -15,7 +15,7 @@ namespace AutoOffice
 {
     public partial class frm_Ocr : Form
     {
-        OcrHelper oOcr;
+        OcrUtil oOcr;
         public frm_Ocr()
         {
             InitializeComponent();
@@ -35,15 +35,15 @@ namespace AutoOffice
 
         private void frm_Ocr_Load(object sender, EventArgs e)
         {
-            foreach(var item in OcrHelper.Langs)
+            foreach(var item in OcrUtil.Langs)
             {
                 this.cbo_langs.Items.Add(item);
             }
-            if (OcrHelper.Langs.Length > 0)
+            if (OcrUtil.Langs.Length > 0)
             {
                 this.cbo_langs.SelectedIndex = 0;
             }
-            oOcr = new OcrHelper();
+            oOcr = new OcrUtil();
             oOcr.DoneEvent += OnDoneEvent;
 
         }

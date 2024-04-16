@@ -25,8 +25,8 @@ namespace AutoOffice
         private void lst_file_DragDrop(object sender, DragEventArgs e)
         {
             string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
-            var fs = DocFormHelper.GetValidDocList(files, new DocType[] { DocType.Word, DocType.Xls, DocType.Ppt });
-            DocFormHelper.ListViewItemAdd(this.lst_file, fs);
+            var fs = Helper.GetValidDocList(files, new DocType[] { DocType.Word, DocType.Xls, DocType.Ppt });
+            Helper.ListViewItemAdd(this.lst_file, fs);
             /*
             foreach (string file in files)
             {
@@ -113,8 +113,8 @@ namespace AutoOffice
             var ok = this.ofd.ShowDialog();
             if (ok == DialogResult.OK)
             {
-                var fs = DocFormHelper.GetValidDocList(this.ofd.FileNames, new DocType[] { DocType.Word, DocType.Xls, DocType.Ppt });
-                DocFormHelper.ListViewItemAdd(this.lst_file, fs);
+                var fs = Helper.GetValidDocList(this.ofd.FileNames, new DocType[] { DocType.Word, DocType.Xls, DocType.Ppt });
+                Helper.ListViewItemAdd(this.lst_file, fs);
             }
         }
     }

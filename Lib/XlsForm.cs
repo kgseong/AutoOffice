@@ -13,18 +13,12 @@ using DocumentFormat.OpenXml.Spreadsheet;
 
 namespace AutoOffice
 {
-    internal class XlsForm: IDocForm
+    internal class XlsForm: DocFormBase
     {
-
-        public event EventHandler<DoneArgs> DoneEvent;
-        public string FormFilePath { get; set; }
-        public string SaveAsPath { get; set; }
-        public XlsForm(string formFilePth, string saveAsPath)
+        public XlsForm(string formFilePth, string saveAsPath):base(formFilePth, saveAsPath)
         {
-            FormFilePath = formFilePth;
-            SaveAsPath = saveAsPath;
         }
-        public bool FillData(Dictionary<string, string> values)
+        public override bool FillData(Dictionary<string, string> values)
         {
             System.IO.File.Copy(FormFilePath, SaveAsPath);
             using (SpreadsheetDocument doc = SpreadsheetDocument.Open(SaveAsPath, true)) { 
@@ -60,7 +54,6 @@ namespace AutoOffice
             return worksheetPart.Worksheet.Elements<SheetData>().SelectMany(i => i.Elements<Row>())
                 .SelectMany(i => i.Elements<Cell>()).ToList();
         }
-
         private static void ProcessCell(Dictionary<string, string> replacements, Cell cell, SharedStringTablePart sharedStringTablePart)
         {
             
@@ -72,7 +65,7 @@ namespace AutoOffice
                 SharedStringItem sharedStringItem = sharedStringTablePart.SharedStringTable.Elements<SharedStringItem>().ElementAt(sharedStringIndex);
 
                 string text = sharedStringItem.Text.Text;
-                foreach (var replacement in replacements.Where(replacement => !string.IsNullOrEmpty(text) && text.Contains(DocFormHelper.GetFieldName( replacement.Key ))))
+                foreach (var replacement in replacements.Where(replacement => !string.IsNullOrEmpty(text) && text.Contains(GetFieldName( replacement.Key ))))
                 {
                     cell.CellValue = new CellValue(replacement.Value);
                     cell.DataType = new EnumValue<CellValues>(CellValues.String);
@@ -80,14 +73,6 @@ namespace AutoOffice
             }
         }
 
-        protected virtual void OnDoneEvent(DoneArgs e)
-        {
-            EventHandler<DoneArgs> raiseEvent = DoneEvent;
-
-            if (raiseEvent != null)
-            {
-                raiseEvent(this, e);
-            }
-        }
+    
     }
 }

@@ -32,29 +32,7 @@ namespace AutoOffice
         public OficeUtil()
         {
         }
-        #region init app
-        void init_doc()
-        {
-            if (doc_app == null) { 
-                doc_app = new word.Application();
-            }
-        }
-        void init_xls() {
-            if (xls_app == null)
-            {
-                xls_app = new xls.Application();
-            }
-        }
-        void init_ppt()
-        {
-            if (ppt_app == null)
-            {
-                ppt_app = new ppt.Application();
-            }
-        }
-        #endregion
-
-        
+ 
         public bool ToPDF(string src_path, string dest_path)
         {
             bool ok = false;
@@ -69,7 +47,7 @@ namespace AutoOffice
                 return false;
             }
             try { 
-                var doctp = DocFormHelper.GetDocType(src_path);
+                var doctp = Helper.GetDocType(src_path);
                 if (doctp == DocType.None)
                 {
                     OnDoneEvent(new DoneArgs(src_path, false, null, "지원되는 파일 형식이 아닙니다."));
@@ -107,7 +85,7 @@ namespace AutoOffice
             }
             try
             {
-                var doctp = DocFormHelper.GetDocType(src_path);
+                var doctp = Helper.GetDocType(src_path);
                 if (doctp ==  DocType.None)
                 {
                     OnDoneEvent(new DoneArgs(src_path, false, null, "지원되는 파일 형식이 아닙니다."));
@@ -143,19 +121,28 @@ namespace AutoOffice
 
         private xls.Workbook GetXls(string path)
         {
-            init_xls();
+            if (xls_app == null)
+            {
+                xls_app = new xls.Application();
+            }
             xls.Workbook doc = xls_app.Workbooks.Open(path);
             return doc;
         }
         private word.Document GetWord(string path)
         {
-            init_doc();
+            if (doc_app == null)
+            {
+                doc_app = new word.Application();
+            }
             word.Document doc = doc_app.Documents.Open(path);
             return doc;
         }
         private ppt.Presentation GetPpt(string path)
         {
-            init_ppt();
+            if (ppt_app == null)
+            {
+                ppt_app = new ppt.Application();
+            }
             ppt.Presentation doc = ppt_app.Presentations.Open((string)path, MsoTriState.msoTrue, MsoTriState.msoTrue, MsoTriState.msoFalse);
             return doc;
         }
@@ -229,19 +216,14 @@ namespace AutoOffice
 
         private bool PdfPrint(string src_path)
         {
-            using (System.Diagnostics.Process p = new System.Diagnostics.Process())
-            {
-                p.StartInfo = new System.Diagnostics.ProcessStartInfo()
-                {
-                    CreateNoWindow = true,
-                    Verb = "print",
-                    FileName = src_path //put the correct path here
-                };
-                p.Start();
-            }
-            return true;
+            return Helper.RawPrint(src_path);
         }
         private bool HwpPrint(string src_path)
+        {
+            return Helper.RawPrint(src_path);
+        }
+        /*
+        private bool RawPrint(string src_path)
         {
             using (System.Diagnostics.Process p = new System.Diagnostics.Process())
             {
@@ -270,7 +252,7 @@ namespace AutoOffice
                 }
             }
             catch { }
-        }
+        }*/
         public void Dispose()
         {
             try

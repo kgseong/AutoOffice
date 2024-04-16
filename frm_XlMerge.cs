@@ -21,7 +21,7 @@ namespace AutoOffice
         //object tree_drag_item;
 
         TabPage[] tabs;
-        string[] help = { @"help_excel_merge2.htm", @"help_excel_merge2.htm" };
+        string[] help = { @"help_xlmerge.htm" };
 
         System.Windows.Forms.TabPage tp_merge = new TabPage();
         System.Windows.Forms.DataGridView gv_merge = new DataGridView();
@@ -46,7 +46,7 @@ namespace AutoOffice
 
         void fillData()
         {
-            var ds = oExcel.OpenExcelToDataSet();
+            var ds = oExcel.ExcelToDataSet();
             foreach (System.Data.DataTable tbl in ds.Tables)
             {
                 System.Windows.Forms.TabPage tp = new TabPage();
@@ -149,7 +149,7 @@ namespace AutoOffice
             var ok = this.sfd.ShowDialog();
             if (ok == DialogResult.OK)
             {
-                oExcel.ExportDSToExcel(dt_merge, this.sfd.FileName);
+                oExcel.ExportDataTableToExcel(dt_merge, this.sfd.FileName);
             }
         }
 
@@ -160,7 +160,7 @@ namespace AutoOffice
             gv_merge.AutoGenerateColumns = true;
 
             string appDir = System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().GetName().CodeBase);
-            web.Url = new Uri(Path.Combine(new string[] { appDir, "help", help[1] }));
+            web.Url = new Uri(Path.Combine(new string[] { appDir, "help", help[0] }));
         }
     }
 }

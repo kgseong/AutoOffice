@@ -11,11 +11,13 @@ using System.Windows.Forms;
 
 namespace AutoOffice
 {
-   
-    public class FormUtil
+   /// <summary>
+   /// Doc Form Data
+   /// </summary>
+    public class FormData
     {
         public DataSet Ds { get; set; } = new DataSet();
-
+        
         public DataTable Tbl { 
             get{
                 if (Ds == null || Ds.Tables.Count==0)
@@ -26,10 +28,9 @@ namespace AutoOffice
             } 
         }
 
-        public List<Field> Schema { get; set; } = new List<Field>();
-       
+        public List<Field> FldSchema { get; set; } = new List<Field>();
      
-        public List<Field> toVals(DataRow rowitem, bool is_index = true)
+        public List<Field> RowToField(DataRow rowitem, bool is_index = true)
         {
             List<Field> vals = new List<Field>();
             foreach(DataColumn c in Tbl.Columns)
@@ -38,10 +39,10 @@ namespace AutoOffice
                 if (is_index == true)
                 {
                     int _idx = int.Parse(c.ColumnName);
-                    _col = Schema.Find(x => x.FldIdx == _idx);
+                    _col = FldSchema.Find(x => x.FldIdx == _idx);
                 }else
                 {
-                    _col = Schema.Find(x => x.ColumnName == c.ColumnName);
+                    _col = FldSchema.Find(x => x.ColumnName == c.ColumnName);
                 }
                 
                 if (_col == null) continue;
@@ -58,7 +59,12 @@ namespace AutoOffice
             return vals;
         }
 
-        //return valid value and filename suffix
+        //
+        /// <summary>
+        /// return only valid value and filename suffix
+        /// </summary>
+        /// <param name="vals"></param>
+        /// <returns>item1:field value, item2:filename suffix</returns>
         public Tuple<Dictionary<string, string>, string> GetFldValues(List<Field> vals)
         {
             Dictionary<string, string> values = new Dictionary<string, string>();
@@ -81,24 +87,31 @@ namespace AutoOffice
             */
         }
 
-        public string CheckKey()
+        /// <summary>
+        /// Check for duplicate file name suffix
+        /// </summary>
+        /// <returns>item1: ok , item2:err message</returns>
+        public Tuple<bool, string> CheckKey()
         {
-            if (this.Tbl == null) return "";
+            if (this.Tbl == null) return new Tuple<bool, string>(true, "");
             Hashtable hash = new Hashtable();
             
             foreach (DataRow row in Tbl.Rows)
             {
-                var items = toVals(row, false);
+                var items = RowToField(row, false);
                 var vals = GetFldValues(items);
                 if (hash.Contains(vals.Item2) == true)
                 {
-                    return "파일명이 중복될 수 있습니다. 파일명으로 사용할 필드를 다시 선택해 주세요";
+                    return new Tuple<bool, string>(false, "파일명이 중복될 수 있습니다. 파일명으로 사용할 필드를 다시 선택해 주세요");
                 }
                 hash.Add(vals.Item2, 0);
             }
-            return "";
+            return new Tuple<bool, string>(true,"");
         }
 
+        /// <summary>
+        /// find fields for not duplicate file name suffix
+        /// </summary>
         public void FindKey()
         {
             int tot_cnt = Tbl.Rows.Count;
@@ -108,7 +121,7 @@ namespace AutoOffice
                                      select row.Field<string>(col.ColumnName)).Distinct();
                 if (distinctNames.Count() == tot_cnt)
                 {
-                    foreach(var fld in Schema)
+                    foreach(var fld in FldSchema)
                     {
                         if (fld.ColumnName == col.ColumnName)
                         {
@@ -120,24 +133,32 @@ namespace AutoOffice
             }
         }
 
+        /// <summary>
+        /// Set data from datatable
+        /// </summary>
+        /// <param name="_dt"></param>
         public void SetData(DataTable _dt)
         {
             
             Ds = new DataSet();
             //Ds.AcceptChanges();
             Ds.Tables.Add(_dt.Copy());
-            this.Schema.Clear();
+            this.FldSchema.Clear();
 
             int cnt = 0;
             foreach (DataColumn col in Tbl.Columns)
             {
                 cnt += 1;
-                this.Schema.Add(new Field() { FldIdx = cnt, ColumnName = col.ColumnName, FldName = col.ColumnName, isFileName = cnt == 1 ? true:false }) ;
+                this.FldSchema.Add(new Field() { FldIdx = cnt, ColumnName = col.ColumnName, FldName = col.ColumnName, isFileName = cnt == 1 ? true:false }) ;
             }
             Ds.AcceptChanges();
         }
 
-
+        /// <summary>
+        /// set data from string (tab divided)
+        /// </summary>
+        /// <param name="txt"></param>
+        /// <param name="first_is_head">first line is head column</param>
         public void SetData(string txt, bool first_is_head = false)
         {
             MakeDataSet(txt, first_is_head);
@@ -193,6 +214,12 @@ namespace AutoOffice
             }
             Ds.AcceptChanges();
         }*/
+
+        /// <summary>
+        /// make dataset from head column line
+        /// </summary>
+        /// <param name="txt"></param>
+        /// <param name="first_is_head"></param>
         private void MakeDataSet(string txt, bool first_is_head = false)
         {
 
@@ -229,7 +256,7 @@ namespace AutoOffice
 
 
             Ds = new DataSet();
-            this.Schema.Clear();
+            this.FldSchema.Clear();
             var tbl = Ds.Tables.Add();
             if (first_is_head == true)
             {
@@ -239,7 +266,7 @@ namespace AutoOffice
                     var col_item = tbl.Columns.Add();
                     col_item.ColumnName = col;
                     col_item.DataType = "".GetType();
-                    Schema.Add(new Field() { FldIdx = _col_idx, ColumnName=col, FldName = col, isFileName = _col_idx == 1 ? true : false });
+                    FldSchema.Add(new Field() { FldIdx = _col_idx, ColumnName=col, FldName = col, isFileName = _col_idx == 1 ? true : false });
                     _col_idx += 1;
                 }
 
@@ -253,7 +280,7 @@ namespace AutoOffice
                     col_item.ColumnName = col;
                     col_item.DataType = "".GetType();
 
-                    Schema.Add(new Field() { FldIdx = _col_idx, ColumnName = col, FldName = col, isFileName = _col_idx == 1 ? true : false });
+                    FldSchema.Add(new Field() { FldIdx = _col_idx, ColumnName = col, FldName = col, isFileName = _col_idx == 1 ? true : false });
                     //_col_idx += 1;
                 }
             }

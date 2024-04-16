@@ -9,7 +9,7 @@ using Tesseract;
 
 namespace AutoOffice
 {
-    internal class OcrHelper
+    internal class OcrUtil
     {
         public event EventHandler<DoneArgs> DoneEvent;
         public static string OcrDataDir = "./tessdata";

@@ -16,11 +16,22 @@ using DocumentFormat.OpenXml.Drawing;
 
 namespace AutoOffice
 {
+    /// <summary>
+    /// Utility for excel
+    /// </summary>
     public  class ExcelUtil
     {
         public DataSet Ds { get; set; }
+        /// <summary>
+        /// input excel file path
+        /// </summary>
         public string ExcelFile { get; set; }
-        public DataSet OpenExcelToDataSet()
+
+        /// <summary>
+        /// Excel file to Dataset
+        /// </summary>
+        /// <returns></returns>
+        public DataSet ExcelToDataSet()
         {
             //DataSet ds = null;
             using (SpreadsheetDocument oSpreadSheetDoc = SpreadsheetDocument.Open(ExcelFile, false))
@@ -90,7 +101,7 @@ namespace AutoOffice
             return Ds;
         }
 
-        public DataTable SQL(string tableName, string Where )
+        public DataTable QueryTable(string tableName, string Where )
         {
             var items = Ds.Tables[tableName].Select(Where);
             DataTable dt = Ds.Tables[tableName].Clone();
@@ -102,7 +113,15 @@ namespace AutoOffice
             dt.AcceptChanges();
             return dt;
         }
-        public DataTable JoinTable(DataTable tbl1, DataTable tbl2, List<Tuple<string, string>> match_cols )
+
+        /// <summary>
+        /// Merge two datatable to  one
+        /// </summary>
+        /// <param name="tbl1">src table</param>
+        /// <param name="tbl2">dst table</param>
+        /// <param name="colmaps">join columns (item1:src col item2:dst col)</param>
+        /// <returns></returns>
+        public DataTable JoinTable(DataTable tbl1, DataTable tbl2, List<Tuple<string, string>> colmaps )
         {
            
             DataTable dt = new DataTable(tbl1.TableName + "_" + tbl2.TableName);
@@ -121,9 +140,9 @@ namespace AutoOffice
                 var s_vals = s_r.ItemArray;
 
                 string where = "";
-                foreach (var match_col in match_cols)
+                foreach (var map in colmaps)
                 {
-                    where += "and " + match_col.Item2 + "='" + s_r[ match_col.Item1] + "' \n";
+                    where += "and " + map.Item2 + "='" + s_r[map.Item1] + "' \n";
                 }
                 var _find_drs = tbl2.Select(where.Substring(4));
 
@@ -148,7 +167,12 @@ namespace AutoOffice
             return dt;
         }
 
-        public void ExportDSToExcel(DataTable dt, string save_path)
+        /// <summary>
+        /// save Datatable to excel file
+        /// </summary>
+        /// <param name="dt"></param>
+        /// <param name="save_path"></param>
+        public void ExportDataTableToExcel(DataTable dt, string save_path)
         {
             var _ds = Ds.Copy();
             _ds.Tables.Add(dt);

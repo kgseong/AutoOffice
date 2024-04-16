@@ -8,7 +8,7 @@ using System.Data;
 
 namespace AutoOffice
 {
-    public class RxUtil : FormUtil
+    public class RxUtil : FormData
     {
         public static Dictionary<string, Regex> _RxDic;
 
@@ -82,7 +82,7 @@ namespace AutoOffice
                 DataRow new_dr = tbl.NewRow();
                 foreach (DataColumn col in tbl.Columns)
                 {
-                    var fld = Schema.Find(x => x.ColumnName == col.ColumnName);
+                    var fld = FldSchema.Find(x => x.ColumnName == col.ColumnName);
                     //if (fld != null && string.IsNullOrEmpty(fld.SelectedRx) == false)
                     if (fld != null)
                     {

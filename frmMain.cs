@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -60,6 +61,12 @@ namespace AutoOffice
         private void btn_find_pattern_Click(object sender, EventArgs e)
         {
             (new frm_Rx()).Show();
+        }
+
+        private void frmMain_Load(object sender, EventArgs e)
+        {
+            string appDir = System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().GetName().CodeBase);
+            web.Url = new Uri(System.IO.Path.Combine(new string[] { appDir, "help", "help_main.htm"}));
         }
     }
 }

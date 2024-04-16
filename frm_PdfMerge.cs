@@ -30,19 +30,19 @@ namespace AutoOffice
         private void lst_file_DragDrop(object sender, DragEventArgs e)
         {
             string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
-            var fs = DocFormHelper.GetValidDocList(files, new DocType[] { DocType.Pdf});
-            DocFormHelper.ListViewItemAdd(this.lst_file, fs);
+            var fs = Helper.GetValidDocList(files, new DocType[] { DocType.Pdf});
+            Helper.ListViewItemAdd(this.lst_file, fs);
            
         }
 
         private void btn_up_Click(object sender, EventArgs e)
         {
-            DocFormHelper.ListViewItemUpDown(this.lst_file, -1);
+            Helper.ListViewItemUpDown(this.lst_file, -1);
         }
 
         private void btn_down_Click(object sender, EventArgs e)
         {
-            DocFormHelper.ListViewItemUpDown(this.lst_file, 1);
+            Helper.ListViewItemUpDown(this.lst_file, 1);
         }
 
         private void btn_del_Click(object sender, EventArgs e)
@@ -75,8 +75,8 @@ namespace AutoOffice
             var ok = this.ofd.ShowDialog();
             if (ok == DialogResult.OK)
             {
-                var fs = DocFormHelper.GetValidDocList(this.ofd.FileNames, new DocType[] { DocType.Pdf });
-                DocFormHelper.ListViewItemAdd(this.lst_file, fs);
+                var fs = Helper.GetValidDocList(this.ofd.FileNames, new DocType[] { DocType.Pdf });
+                Helper.ListViewItemAdd(this.lst_file, fs);
             }
         }
 

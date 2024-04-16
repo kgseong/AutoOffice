@@ -33,8 +33,8 @@ namespace AutoOffice
         {
             string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
 
-            var fs = DocFormHelper.GetValidDocList(files, new DocType[] { DocType.Word, DocType.Xls, DocType.Ppt, DocType.Pdf, DocType.Hwp });
-            DocFormHelper.ListViewItemAdd(this.lst_file, fs);
+            var fs = Helper.GetValidDocList(files, new DocType[] { DocType.Word, DocType.Xls, DocType.Ppt, DocType.Pdf, DocType.Hwp });
+            Helper.ListViewItemAdd(this.lst_file, fs);
             /*
             foreach (string file in files)
             {
@@ -110,8 +110,8 @@ namespace AutoOffice
             var ok = this.ofd.ShowDialog();
             if (ok == DialogResult.OK)
             {
-                var fs = DocFormHelper.GetValidDocList(this.ofd.FileNames, new DocType[] { DocType.Word, DocType.Xls, DocType.Ppt, DocType.Pdf, DocType.Hwp });
-                DocFormHelper.ListViewItemAdd(this.lst_file, fs);
+                var fs = Helper.GetValidDocList(this.ofd.FileNames, new DocType[] { DocType.Word, DocType.Xls, DocType.Ppt, DocType.Pdf, DocType.Hwp });
+                Helper.ListViewItemAdd(this.lst_file, fs);
             }
         }
     }
